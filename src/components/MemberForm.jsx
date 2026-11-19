@@ -8,6 +8,7 @@ const initialForm = {
   firstName: "",
   lastName: "",
   middleName: "",
+  civilStatus: "",
   email: "",
   address: "",
   gender: "",
@@ -209,7 +210,7 @@ function MemberForm() {
                 name="Age"
                 value={computeAge(form.birthday)}
                 readOnly
-                placeholder="Calculated from birthday"
+                placeholder="Your age is..."
             />
 
         </div>
