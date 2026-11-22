@@ -1,6 +1,7 @@
 import type {Timestamp} from 'firebase/firestore';
 
 export interface Member {
+  id: string;
   firstName: string;
   lastName: string;
   middleName?: string;
