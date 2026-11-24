@@ -1,5 +1,5 @@
 import { getMembers } from '../services/members'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSearch } from '../hooks/useSearch'
 
 import SearchFilter from './SearchFilter'
@@ -14,7 +14,13 @@ const MEMBER_SEARCH_FIELDS = ['firstName', 'middleName', 'lastName', 'email']
 export default function MemberList() {
     const [members, setMembers] = useState([])
     const [loading, setLoading] = useState(true)
+    const [gender, setGender] = useState('')
     const { search, setSearch, results } = useSearch(members, MEMBER_SEARCH_FIELDS)
+
+    const filteredMembers = useMemo(
+        () => (gender ? results.filter((m) => m.gender === gender) : results),
+        [results, gender]
+    )
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -39,9 +45,15 @@ export default function MemberList() {
         <div className="member-list">
             <div className="member-list-header">
                 <h2 className="member-list-title">Member List</h2>
-                <SearchFilter value={search} onChange={setSearch} placeholder="Search members..." />
+                <SearchFilter
+                    value={search}
+                    onChange={setSearch}
+                    placeholder="Search members..."
+                    gender={gender}
+                    onGenderChange={setGender}
+                />
                 <span className="member-list-count">
-                    {results.length} {results.length === 1 ? 'member' : 'members'}
+                    {filteredMembers.length} {filteredMembers.length === 1 ? 'member' : 'members'}
                 </span>
             </div>
 
@@ -58,14 +70,14 @@ export default function MemberList() {
                         </tr>
                     </thead>
                     <tbody>
-                        {results.length === 0 ? (
+                        {filteredMembers.length === 0 ? (
                             <tr>
                                 <td colSpan="6" className="member-table-empty">
-                                    {search ? 'No members match your search.' : 'No members yet.'}
+                                    {search || gender ? 'No members match your search.' : 'No members yet.'}
                                 </td>
                             </tr>
                         ) : (
-                            results.map((member) => (
+                            filteredMembers.map((member) => (
                                 <tr key={member.id}>
                                     <td>{member.lastName}</td>
                                     <td>{member.firstName}</td>

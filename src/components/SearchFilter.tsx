@@ -2,11 +2,21 @@ interface SearchFilterProps {
   value: string
   onChange: (value: string) => void
   placeholder?: string
+  gender: string
+  onGenderChange: (value: string) => void
 }
 
-function SearchFilter({ value, onChange, placeholder = 'Search...' }: SearchFilterProps) {
+function SearchFilter({
+  value,
+  onChange,
+  placeholder = 'Search...',
+  gender,
+  onGenderChange,
+}: SearchFilterProps) {
+
   return (
-    <div className="search-filter">
+  <div className="search-filter">
+    <div className="search-filter-field">
       <svg
         className="search-filter-icon"
         viewBox="0 0 24 24"
@@ -41,7 +51,18 @@ function SearchFilter({ value, onChange, placeholder = 'Search...' }: SearchFilt
         </button>
       )}
     </div>
-  )
-}
+
+    <select
+      className="search-filter-select"
+      value={gender}
+      onChange={(e) => onGenderChange(e.target.value)}
+      aria-label="Filter by gender"
+    >
+      <option value="">All</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+  </div>
+)}
 
 export default SearchFilter
