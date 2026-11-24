@@ -1,5 +1,5 @@
 
-import MemberList from "../components/MemberList";
+import MembersTable from "../components/MembersTable";
 
 export default function Members() {
   return (
@@ -8,7 +8,7 @@ export default function Members() {
         <h1 className="text-6xl font-bold">Members</h1>
         <p className="mt-3 text-2xl">Welcome to the Members page!</p>
   
-        <MemberList />
+        <MembersTable />
 
       </main>
     </div>

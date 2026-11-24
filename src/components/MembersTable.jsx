@@ -3,15 +3,16 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSearch } from '../hooks/useSearch'
 
 import SearchFilter from './SearchFilter'
+import ElipsisMenu from './ElipsisMenu'
 
-import './MemberList.css'
+import './MembersTable.css'
 import './SearchFilter.css'
 
 import { formatDate } from '../utils/date'
 
 const MEMBER_SEARCH_FIELDS = ['firstName', 'middleName', 'lastName', 'email']
 
-export default function MemberList() {
+export default function MembersTable() {
     const [members, setMembers] = useState([])
     const [loading, setLoading] = useState(true)
     const [gender, setGender] = useState('')
@@ -36,6 +37,17 @@ export default function MemberList() {
 
         fetchMembers()
     }, [])
+
+    const handleEdit = (member) => {
+        console.log('Edit', member)
+        // TODO: buksan ang edit form/modal
+    }
+
+    const handleDelete = (member) => {
+        if (!window.confirm(`Delete ${member.firstName} ${member.lastName}?`)) return
+        console.log('Delete', member)
+        // TODO: tawagin ang delete API tapos i-update ang members state
+    }
 
     if (loading) {
         return <div className="member-list-status">Loading members...</div>
@@ -64,27 +76,34 @@ export default function MemberList() {
                             <th>Last Name</th>
                             <th>First Name</th>
                             <th>Middle Name</th>
-                            <th>Email</th>
+                            <th className="col-email">Email</th>
                             <th>Birthday</th>
                             <th className="col-age">Age</th>
+                            <th className="col-actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredMembers.length === 0 ? (
                             <tr>
-                                <td colSpan="6" className="member-table-empty">
+                                <td colSpan="7" className="member-table-empty">
                                     {search || gender ? 'No members match your search.' : 'No members yet.'}
                                 </td>
                             </tr>
                         ) : (
                             filteredMembers.map((member) => (
                                 <tr key={member.id}>
-                                    <td>{member.lastName}</td>
-                                    <td>{member.firstName}</td>
-                                    <td>{member.middleName}</td>
-                                    <td>{member.email}</td>
+                                    <td title={member.lastName}>{member.lastName}</td>
+                                    <td title={member.firstName}>{member.firstName}</td>
+                                    <td title={member.middleName}>{member.middleName}</td>
+                                    <td title={member.email}>{member.email}</td>
                                     <td>{formatDate(member.birthday)}</td>
                                     <td className="col-age">{member.age}</td>
+                                    <td className="col-actions">
+                                        <ElipsisMenu
+                                            onEdit={() => handleEdit(member)}
+                                            onDelete={() => handleDelete(member)}
+                                        />
+                                    </td>
                                 </tr>
                             ))
                         )}
