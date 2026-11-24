@@ -1,14 +1,14 @@
-interface SearchBarProps {
+interface SearchFilterProps {
   value: string
   onChange: (value: string) => void
   placeholder?: string
 }
 
-function SearchBar({ value, onChange, placeholder = 'Search...' }: SearchBarProps) {
+function SearchFilter({ value, onChange, placeholder = 'Search...' }: SearchFilterProps) {
   return (
-    <div className="search-bar">
+    <div className="search-filter">
       <svg
-        className="search-bar-icon"
+        className="search-filter-icon"
         viewBox="0 0 24 24"
         width="18"
         height="18"
@@ -24,7 +24,7 @@ function SearchBar({ value, onChange, placeholder = 'Search...' }: SearchBarProp
 
       <input
         type="text"
-        className="search-bar-input"
+        className="search-filter-input"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
@@ -33,7 +33,7 @@ function SearchBar({ value, onChange, placeholder = 'Search...' }: SearchBarProp
       {value && (
         <button
           type="button"
-          className="search-bar-clear"
+          className="search-filter-clear"
           onClick={() => onChange('')}
           aria-label="Clear search"
         >
@@ -44,4 +44,4 @@ function SearchBar({ value, onChange, placeholder = 'Search...' }: SearchBarProp
   )
 }
 
-export default SearchBar
+export default SearchFilter

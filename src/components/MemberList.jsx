@@ -2,10 +2,10 @@ import { getMembers } from '../services/members'
 import { useEffect, useState } from 'react'
 import { useSearch } from '../hooks/useSearch'
 
-import SearchBar from './SearchBar'
+import SearchFilter from './SearchFilter'
 
 import './MemberList.css'
-import './SearchBar.css'
+import './SearchFilter.css'
 
 import { formatDate } from '../utils/date'
 
@@ -39,7 +39,7 @@ export default function MemberList() {
         <div className="member-list">
             <div className="member-list-header">
                 <h2 className="member-list-title">Member List</h2>
-                <SearchBar value={search} onChange={setSearch} placeholder="Search members..." />
+                <SearchFilter value={search} onChange={setSearch} placeholder="Search members..." />
                 <span className="member-list-count">
                     {results.length} {results.length === 1 ? 'member' : 'members'}
                 </span>
