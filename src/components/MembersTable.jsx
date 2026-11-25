@@ -1,6 +1,7 @@
 import { getMembers } from '../services/members'
 import { useEffect, useMemo, useState } from 'react'
 import { useSearch } from '../hooks/useSearch'
+import { useNavigate } from 'react-router-dom'
 
 import SearchFilter from './SearchFilter'
 import ElipsisMenu from './ElipsisMenu'
@@ -13,6 +14,7 @@ import { formatDate } from '../utils/date'
 const MEMBER_SEARCH_FIELDS = ['firstName', 'middleName', 'lastName', 'email']
 
 export default function MembersTable() {
+    const navigate = useNavigate()
     const [members, setMembers] = useState([])
     const [loading, setLoading] = useState(true)
     const [gender, setGender] = useState('')
@@ -39,8 +41,7 @@ export default function MembersTable() {
     }, [])
 
     const handleEdit = (member) => {
-        console.log('Edit', member)
-        // TODO: buksan ang edit form/modal
+        navigate(`/members/MembersForm/${member.id}`)
     }
 
     const handleDelete = (member) => {
@@ -100,9 +101,9 @@ export default function MembersTable() {
                                     <td className="col-age">{member.age}</td>
                                     <td className="col-actions">
                                         <ElipsisMenu
-                                            onEdit={() => handleEdit(member)}
-                                            onDelete={() => handleDelete(member)}
-                                        />
+                                            onEdit={() => navigate(`/members/MembersForm/${member.id}`)}
+                                            onDelete={() => handleDelete(member.id)}
+                                            />
                                     </td>
                                 </tr>
                             ))

@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { addMember, memberExist } from '../services/members'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { addMember, memberExist, getMemberById, updateMember } from '../services/members'
 import { computeAge } from '../utils/age'
 import './MemberForm.css'
-
 
 const initialForm = {
   firstName: "",
@@ -18,10 +18,28 @@ const initialForm = {
   age: "",
 };
 
-export default function MemberForm() {
+export default function MemberForm({ memberId }) {
+  const isEdit = Boolean(memberId);
+  const navigate = useNavigate();
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!isEdit) return;
+
+    const loadMember = async () => {
+      try {
+        const member = await getMemberById(memberId);
+        setForm({ ...initialForm, ...member });
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load member data.");
+      }
+    };
+
+    loadMember();
+  }, [isEdit, memberId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,20 +73,25 @@ export default function MemberForm() {
     setError("");
 
     try {
-      const exist = await memberExist(form.firstName, form.lastName, form.birthday);
+      if (isEdit) {
+        await updateMember(memberId, form);
+        alert("Member updated successfully!");
+        navigate("/members/MembersList");
+      } else {
+        const exist = await memberExist(form.firstName, form.lastName, form.birthday);
 
-      if (exist) {
-        alert("Member already exists.");
-        return; 
+        if (exist) {
+          alert("Member already exists.");
+          return;
+        }
+
+        await addMember(form);
+        setForm(initialForm);
+        alert("Member added successfully!");
       }
-
-      await addMember(form);
-
-      setForm(initialForm);
-      alert("Member added successfully!");
     } catch (err) {
       console.error(err);
-      setError("Something went wrong. Please try again.");
+      setError("Failed to save member. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -77,8 +100,12 @@ export default function MemberForm() {
   return (
     <div className="page">
       <div className="card">
-        <h1 className="card-title">Add member</h1>
-        <p className="card-subtitle">Fill in the details below to register a new member.</p>
+        <h1 className="card-title">{isEdit ? "Edit Member" : "Add Member"}</h1>
+        <p className="card-subtitle">
+          {isEdit
+            ? "Update the member's information below."
+            : "Fill out the form below to add a new member."}
+        </p>
 
         <form className="form-grid" onSubmit={handleSubmit}>
           <div className="field">
@@ -133,10 +160,7 @@ export default function MemberForm() {
             />
           </div>
 
-          
-        <div className="field field-full">
-
-        
+          <div className="field field-full">
             <label htmlFor="email">Email</label>
             <input
               id="email"
@@ -145,11 +169,10 @@ export default function MemberForm() {
               value={form.email}
               onChange={handleChange}
               placeholder="juan@example.com"
-            /> 
+            />
+          </div>
 
-        </div>
-
-        <div className="field field-full">
+          <div className="field field-full">
             <label htmlFor="address">Address</label>
             <input
               id="address"
@@ -159,9 +182,9 @@ export default function MemberForm() {
               onChange={handleChange}
               placeholder="Street, Barangay, City"
             />
-        </div>
+          </div>
 
-                  <div className="field">
+          <div className="field">
             <label htmlFor="gender">Gender</label>
             <select
               id="gender"
@@ -229,7 +252,7 @@ export default function MemberForm() {
           {error && <p className="error" role="alert">{error}</p>}
 
           <button className="btn" type="submit" disabled={submitting}>
-            {submitting ? "Saving..." : "Save member"}
+            {submitting ? "Saving..." : isEdit ? "Update Member" : "Save Member"}
           </button>
         </form>
       </div>

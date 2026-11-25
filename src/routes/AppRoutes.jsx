@@ -10,6 +10,7 @@ export default function AppRoutes() {
       <Route path="/" element={<App />} />
       <Route path="/members/MembersList" element={<MembersList />} />
       <Route path="/members/MembersForm" element={<MembersForm />} />
+      <Route path="/members/MembersForm/:id" element={<MembersForm />} />
     </Routes>
   );
 }
