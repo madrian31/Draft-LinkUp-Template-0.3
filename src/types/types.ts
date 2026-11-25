@@ -5,15 +5,16 @@ export interface Member {
   firstName: string;
   lastName: string;
   middleName?: string;
-  civilStatus?: string;
+  suffix?: string;
   email: string;
   address: string;
   gender?: 'Male' | 'Female';
   phone?: string;
   birthday?: string;
   age?: number;
+  civilStatus?: string;
   createdAt: Timestamp;
 }
 
 export type NewMember = Omit<Member, 'createdAt'>;
-export type MemberForm = Pick<Member, 'firstName' | 'lastName' | 'middleName' | 'civilStatus' | 'email' | 'address' | 'gender' | 'phone' | 'birthday' | 'age'>;
+export type MemberForm = Pick<Member, 'firstName' | 'lastName' | 'middleName' | 'suffix' | 'email' | 'address' | 'gender' | 'phone' | 'birthday' | 'age' | 'civilStatus'>;

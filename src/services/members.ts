@@ -7,20 +7,22 @@ export interface MemberInput {
   firstName: string;
   lastName: string;
   middleName: string;
-  civilStatus: string;
+  suffix: string;
   email: string;
   address: string;
   gender: 'Male' | 'Female';
   phone: string;
   birthday: string;
+  civilStatus: string;
 }
 
 // Add a new member to the Firestore database
-export const addMember = ({ firstName, lastName, middleName, civilStatus, email, address, gender, phone, birthday }: MemberInput) =>
+export const addMember = ({ firstName, lastName, middleName, suffix, email, address, gender, phone, birthday, civilStatus }: MemberInput) =>
   addDoc(collection(db, "Members"), {
     firstName: firstName.trim(),
     lastName: lastName.trim(),
     middleName: middleName.trim(),
+    suffix: suffix.trim(),
     civilStatus: civilStatus.trim(),
     email: email.trim(),
     address: address.trim(),

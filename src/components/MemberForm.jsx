@@ -8,6 +8,7 @@ const initialForm = {
   firstName: "",
   lastName: "",
   middleName: "",
+  suffix: "",
   civilStatus: "",
   email: "",
   address: "",
@@ -17,7 +18,7 @@ const initialForm = {
   age: "",
 };
 
-function MemberForm() {
+export default function MemberForm() {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -119,22 +120,20 @@ function MemberForm() {
           </div>
 
           <div className="field">
-            <label htmlFor="civilStatus">Civil Status</label>
-           
-            <select
-              id="civilStatus"
-              name="civilStatus"
-              value={form.civilStatus}
+            <label htmlFor="suffix">
+              Suffix <span className="optional">(optional)</span>
+            </label>
+            <input
+              id="suffix"
+              type="text"
+              name="suffix"
+              value={form.suffix}
               onChange={handleChange}
-            >
-              <option value="">Select civil status</option>
-              <option value="Single">Single</option>
-              <option value="Married">Married</option>
-              <option value="Widowed">Widowed</option>
-              <option value="Divorced">Divorced</option>
-            </select>
+              placeholder="Jr., Sr., III, etc."
+            />
           </div>
 
+          
         <div className="field field-full">
 
         
@@ -162,7 +161,7 @@ function MemberForm() {
             />
         </div>
 
-          <div className="field">
+                  <div className="field">
             <label htmlFor="gender">Gender</label>
             <select
               id="gender"
@@ -176,44 +175,56 @@ function MemberForm() {
             </select>
           </div>
 
-        <div className="field">
-          
-          <label htmlFor="phone">Phone Number</label>
-          <input
-            id="phone"
-            type="text"
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            placeholder="09XXXXXXXXX"
-          />
+          <div className="field">
+            <label htmlFor="civilStatus">Civil Status</label>
+            <select
+              id="civilStatus"
+              name="civilStatus"
+              value={form.civilStatus}
+              onChange={handleChange}
+            >
+              <option value="">Select civil status</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Widowed">Widowed</option>
+              <option value="Divorced">Divorced</option>
+            </select>
           </div>
 
-
-        <div className="field">
+          <div className="field">
             <label htmlFor="birthday">Birthday</label>
             <input
-                id="birthday"
-                type="date"
-                name="birthday"
-                value={form.birthday}
-                onChange={handleChange}
+              id="birthday"
+              type="date"
+              name="birthday"
+              value={form.birthday}
+              onChange={handleChange}
             />
-            </div>
+          </div>
 
-            <div className="field">
-
+          <div className="field">
             <label htmlFor="age">Age</label>
             <input
-                id="age"
-                type="text"
-                name="Age"
-                value={computeAge(form.birthday)}
-                readOnly
-                placeholder="Your age is..."
+              id="age"
+              type="text"
+              name="age"
+              value={computeAge(form.birthday)}
+              readOnly
+              placeholder="Your age is..."
             />
+          </div>
 
-        </div>
+          <div className="field field-full">
+            <label htmlFor="phone">Phone Number</label>
+            <input
+              id="phone"
+              type="text"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="09XXXXXXXXX"
+            />
+          </div>
 
           {error && <p className="error" role="alert">{error}</p>}
 
@@ -225,5 +236,3 @@ function MemberForm() {
     </div>
   );
 }
-
-export default MemberForm
