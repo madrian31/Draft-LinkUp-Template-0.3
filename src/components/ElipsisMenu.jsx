@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import './ElipsisMenu.css'
+import {useNavigate} from "react-router-dom";
 
 const MENU_WIDTH = 140
 
 export default function ElipsisMenu({ onEdit, onDelete }) {
     const [open, setOpen] = useState(false)
+    const navigate = useNavigate()
     const [pos, setPos] = useState({ top: 0, left: 0 })
     const buttonRef = useRef(null)
     const menuRef = useRef(null)
@@ -64,15 +66,16 @@ export default function ElipsisMenu({ onEdit, onDelete }) {
 
             {open && (
                 <div
-                    ref={menuRef}
                     className="elipsis-menu"
                     role="menu"
-                    style={{ top: pos.top, left: pos.left, width: MENU_WIDTH }}
                 >
-                    <button type="button" role="menuitem" onClick={() => handleSelect(onEdit)}>
+                    <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => handleSelect(() => navigate('/members/edit'))}
+                    >
                         Edit
                     </button>
-                    
                 </div>
             )}
         </>

@@ -1,7 +1,7 @@
 
-import MembersTable from "../components/MembersTable";
+import MembersTable from "../../components/MembersTable";
 
-export default function Members() {
+export default function MembersList() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
